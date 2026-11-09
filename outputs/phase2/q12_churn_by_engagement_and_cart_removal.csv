@@ -1,0 +1,10 @@
+dimension,segment,buyers,churn_rate_pct
+cart_removal_band,0. No carts,657,90.56
+cart_removal_band,1. <25% removed,25333,89.05
+cart_removal_band,2. 25-50% removed,17565,83.68
+cart_removal_band,3. 50-75% removed,16242,82.61
+cart_removal_band,4. 75%+ removed,12428,81.53
+engagement_trend,1. No activity in last 31d,35810,92.93
+engagement_trend,2. Declining,11799,67.17
+engagement_trend,3. Flat,220,75.91
+engagement_trend,4. Growing,24396,82.12

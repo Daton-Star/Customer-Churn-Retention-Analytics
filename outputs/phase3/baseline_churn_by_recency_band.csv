@@ -1,0 +1,4 @@
+recency_band,buyers,churn_rate_pct
+1. Last order in Dec (<=30d),24722,78.66
+2. Last order in Nov (31-61d),27850,85.66
+3. Last order in Oct (62-92d),19653,92.1

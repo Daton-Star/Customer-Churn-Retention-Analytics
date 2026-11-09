@@ -1,0 +1,22 @@
+{
+  "best_model": "XGBoost",
+  "base_churn_test": 0.850190377293181,
+  "n_train": 57780,
+  "n_test": 14445,
+  "confusion_matrix": [
+    [
+      1463,
+      701
+    ],
+    [
+      2678,
+      9603
+    ]
+  ],
+  "oof_roc_auc_calibrated": 0.7955528393144121,
+  "oof_brier_calibrated": 0.1015255751135329,
+  "deployment_model_cv_roc_auc_mean": 0.7348061810588561,
+  "deployment_model_cv_roc_auc_std": 0.0047951940142907466,
+  "current_buyers_scored": 69116,
+  "current_expected_churners": 58632.95
+}

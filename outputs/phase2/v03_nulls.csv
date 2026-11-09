@@ -1,0 +1,6 @@
+tbl,null_keys,null_measure
+orders,0,0
+user_churn_features,0,0
+products,0,0
+products.category_code (expected mostly null),53942,
+user_churn_features.avg_days_between_orders (null = single order),58931,58931

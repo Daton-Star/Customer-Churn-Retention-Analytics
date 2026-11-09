@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Large generated tables: run_all.py regenerates them (keeps every file under GitHub's 25 MB web-upload limit)
+outputs/phase3/customer_status_by_user.csv
+outputs/phase4/rfm_by_user.csv
+outputs/phase6/current_buyers_churn_scores_mar_apr.csv
+outputs/phase6/oof_churn_scores_oct_dec_cohort.csv
+outputs/phase7/bgnbd_calibration_holdout_by_user.csv
+outputs/phase7/clv_90d_all_buyers.csv
+outputs/phase7/current_buyers_value_risk.csv
+# Power BI fact/dimension tables ship zipped in dashboard/powerbi/large_tables.zip
+dashboard/powerbi/dim_customer.csv
+dashboard/powerbi/fact_orders.csv

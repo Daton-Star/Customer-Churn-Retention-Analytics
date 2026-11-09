@@ -1,0 +1,5 @@
+quadrant,buyers,avg_churn_prob,clv_90d,dec_feb_spend,revenue_at_risk,rar_share
+"Automate (lower value, high risk)",46818,0.9041,522807.3481,1684633.24,2345801.2601,0.6686
+"Grow (lower value, lower risk)",1228,0.6737,15840.3558,51683.83,26992.7275,0.0077
+"Protect (high value, lower risk)",8335,0.4954,672601.6725,1168440.99,318102.2244,0.0907
+"Save now (high value, high risk)",12735,0.8882,345264.3199,658700.69,817779.0307,0.2331

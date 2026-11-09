@@ -1,0 +1,4 @@
+gap_type,gaps,median_days,p75_days,p90_days,pct_within_60d
+1st -> 2nd order,23303,22.1,45.6,74.5,83.8
+2nd+ -> next order,21796,16.1,31.2,52.0,93.38
+All repeat gaps,45099,18.9,38.0,63.8,88.43

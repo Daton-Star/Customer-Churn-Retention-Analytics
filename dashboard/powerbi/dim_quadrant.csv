@@ -1,0 +1,6 @@
+value_risk_quadrant,quadrant_sort,recommended_action,action_owner
+"Save now (high value, high risk)",1,"Personalised win-back with a 10% offer (WhatsApp/push, email fallback)",CRM / Retention
+"Protect (high value, lower risk)",2,Loyalty perks and early access; no discount,CRM / Loyalty
+"Grow (lower value, lower risk)",3,Cross-sell bundles to lift basket size,Merchandising
+"Automate (lower value, high risk)",4,Automated replenishment / saved-cart nudge; no discount,Marketing automation
+Lapsed (no order Dec-Feb),5,Low-cost reactivation only; suppress from paid offers,Marketing automation

@@ -1,0 +1,168 @@
+id,metric,value,unit,source_file_or_query,phase_added
+K01,Raw clickstream events (Stage 1 input),20692840,events,data_quality_report.csv: raw_rows,1
+K02,Exact duplicate rows removed,1109098,rows,data_quality_report.csv: exact_duplicate_rows,1
+K03,Negative-price rows removed,131,rows,data_quality_report.csv: negative_price_rows,1
+K04,Clean events after dedup and filters,19583618,events,data_quality_report.csv: clean_rows_after_dedup_and_filters,1
+K05,Unique users (raw),1639358,users,data_quality_report.csv: unique_users,1
+K06,Unique products,54571,products,data_quality_report.csv: unique_products,1
+K07,Unique sessions,4535941,sessions,data_quality_report.csv: unique_sessions,1
+K08,Rows with null brand,8757117,rows,data_quality_report.csv: null_brand,1
+K09,Rows with null category_code,20339246,rows,data_quality_report.csv: null_category_code,1
+K10,Zero-price rows (kept),104157,rows,data_quality_report.csv: zero_price_rows,1
+K11,Date range,2019-10-01 to 2020-02-29,dates,data_quality_report.csv: date_min/date_max,1
+K12,Total orders (session-based),155617,orders,data_quality_report.csv: total_orders; orders.csv count,1
+K13,Total buyers,110518,users,data_quality_report.csv: total_buyers; orders.csv distinct user_id,1
+K14,Total revenue Oct-Feb,6348267.70,currency units,orders.csv SUM(order_value) (phase1_baseline.py: orders_overall),1
+K15,Average order value (AOV),40.79,currency units,orders.csv AVG(order_value) (orders_overall),1
+K16,Orders per buyer (5 months),1.408,orders,orders.csv (orders_overall),1
+K17,Repeat-purchase rate (buyers with 2+ orders; 5 months),21.09%,share,orders.csv (repeat_rate_5m),1
+K18,Churn cohort size (Oct-Dec 2019 buyers),72225,users,user_churn_features.csv count (churn_cohort),1
+K19,Churned buyers (no order Jan-Feb 2020),61403,users,user_churn_features.csv SUM(churned),1
+K20,Churn rate,85.02%,share,data_quality_report.csv: churn_rate_oct_dec_buyers_in_jan_feb; user_churn_features.csv AVG(churned),1
+K21,Oct-Dec spend of churn cohort,3854023.56,currency units,user_churn_features.csv SUM(total_spend),1
+K22,Oct-Dec spend of buyers who later churned,2858778.71,currency units,user_churn_features.csv SUM(total_spend) WHERE churned=1,1
+K23,Share of cohort spend from buyers who churned,74.18%,share,churn_cohort,1
+K24,Single-order share of churn cohort,81.59%,share,user_churn_features.csv n_orders=1 (churn_cohort),1
+K25,Churn rate: single-order buyers,90.37% (n=58931),share,churn_by_single_order,1
+K26,Churn rate: multi-order buyers,61.28% (n=13294),share,churn_by_single_order,1
+K27,Jan-Feb spend of retained cohort buyers,782262.97,currency units,user_churn_features.csv SUM(future_spend),1
+K28,Cart events per view event,58.54%,ratio,daily_kpis.csv SUM(carts)/SUM(views) (funnel_events),1
+K29,Purchased items per cart event,22.75%,ratio,daily_kpis.csv SUM(purchase_items)/SUM(carts),1
+K30,Session cart abandonment rate (cart sessions with no purchase),87.21%,share,session_summary.csv 860941/987225 (cart_abandonment_sessions),1
+K31,Session conversion (sessions with purchase / all sessions),3.43%,share,session_summary.csv 155617/4537808,1
+K32,Revenue Oct / Nov / Dec 2019,1251727.86 / 1533081.09 / 1069214.61,currency units,q01_monthly_kpis_mom,2
+K33,Revenue Jan / Feb 2020,1307817.49 / 1186426.65,currency units,q01_monthly_kpis_mom,2
+K34,Revenue MoM: Nov +22.48% / Dec -30.26% / Jan +22.32% / Feb -9.28%,see value,pct,q01_monthly_kpis_mom,2
+K35,AOV Dec 2019 (lowest month),37.27,currency units,q01_monthly_kpis_mom,2
+K36,Returning-buyer share of monthly buyers Nov -> Feb,14.60% -> 29.93%,share,q03_new_vs_returning_buyers,2
+K37,Repeat purchase gaps (consecutive orders),45099 gaps from 23303 buyers,count,q04_interpurchase_gaps,2
+K38,Inter-purchase gap median / p75 / p90,18.9 / 38.0 / 63.8 days,days,q04_interpurchase_gaps,2
+K39,Share of repeat gaps within 60 days,88.43%,share,q04_interpurchase_gaps,2
+K40,Churn by RFM total: score 3 vs 15,94.48% vs 44.66%,share,q05_rfm_scores_vs_churn,2
+K41,"Revenue share of missing-brand (""unknown"") products",40.38%,share,q06_top_brands_rank,2
+K42,Top named brand by revenue: runail,343306.15 (5.41%),currency units,q06_top_brands_rank,2
+K43,Brand view-to-purchase range (brands with 50k+ views),7.59% (concept) to 22.50% (bpw.style),ratio,q07_brand_conversion,2
+K44,Top category by revenue (1487580005092295511; top brand uno),418307.97,currency units,q08_category_conversion_with_products,2
+K45,Session cart abandonment Oct 2019 -> Feb 2020,89.24% -> 87.55%,share,q09_cart_abandonment_trend,2
+K46,Churn by first-order month: Dec / Nov / Oct(left-censored),87.34% / 85.63% / 82.61%,share,q10_december_vs_other_buyers,2
+K47,Dec-acquired buyers avg AOV vs Oct-acquired,35.68 vs 41.89,currency units,q10_december_vs_other_buyers,2
+K48,Churn by Oct-Dec orders: 1 / 2 / 3 / 4+,90.37% / 70.00% / 51.69% / 33.33%,share,q11_churn_by_order_count,2
+K49,Single-order buyers' share of cohort spend,58.80%,share,q11_churn_by_order_count,2
+K50,Churn: no activity in last 31 days of observation,92.93% (n=35810),share,q12_churn_by_engagement_and_cart_removal,2
+K51,Churn: some activity in last 31 days (declining / growing),67.17% / 82.12%,share,q12_churn_by_engagement_and_cart_removal,2
+K52,Churn by cart-removal band: <25% vs 75%+ removed,89.05% vs 81.53%,share,q12_churn_by_engagement_and_cart_removal,2
+K53,Revenue share of top 1% / 10% / 20% customers,11.19% / 43.00% / 59.31%,share,q13_pareto_revenue_concentration,2
+K54,Peak revenue hour slot (UTC),Thu 11:00 (72788.65),currency units,q14_peak_hours_conversion,2
+K55,Single-event sessions: share of sessions vs share of purchases,63.78% vs 0.88%,share,q15_session_depth_conversion,2
+K56,Purchase rate: sessions with 21+ events vs 2-5 events,31.97% vs 2.13%,share,q15_session_depth_conversion,2
+K57,Validation: churn label re-derived from orders.csv matches,72225 of 72225,users,v06_churn_label_check,2
+K58,Share of raw rows: duplicates / clean / zero-price / null session,5.36% / 94.64% / 0.50% / 0.02%,share,data_quality_report.csv ratios to raw_rows,2
+K59,Share of raw rows: null brand / null category_code,42.32% / 98.29%,share,data_quality_report.csv ratios to raw_rows,2
+K60,Churn: bought in December vs did not (any order in Dec),78.72% (n=25409) vs 88.44% (n=46816),share,user_churn_features.csv GROUP BY bought_in_december,2
+K61,#2 revenue category (top brand strong) view-to-purchase,1.38% (median product price 97.46),ratio,q08_category_conversion_with_products,2
+K62,1st->2nd order gap median / p75 / p90,22.1 / 45.6 / 74.5 days (n=23303),days,phase3 gap_percentiles,3
+K63,Share of 1st->2nd gaps within 60 days,83.80%,share,phase3 gap_percentiles,3
+K64,2nd+ order gap median / p90; share within 60 days,16.1 / 52.0 days; 93.38%,days,phase3 gap_percentiles,3
+K65,Oct first-time buyers who placed a 2nd order by day 30 / 60 / 90 / 120,17.15% / 26.72% / 30.29% / 33.13%,share,phase3 time_to_second_order_oct_first_buyers,3
+K66,Share of 120-day returns captured by a 60-day window,80.65%,share,phase3 time_to_second_order_summary,3
+K67,Churn rate: 1-month window (Oct-Dec -> Jan),89.59%,share,phase3 sensitivity_definitions (B),3
+K68,Churn rate: 3-month window (Oct-Nov -> Dec-Feb; n=52523),78.83%,share,phase3 sensitivity_definitions (C),3
+K69,Churn rate: 2-month window shifted (Oct-Nov -> Dec-Jan; n=52523),82.12%,share,phase3 sensitivity_definitions (D),3
+K70,2-month churners who returned in month 3 (false churn),1730 of 43132 = 4.01%,share,phase3 label_noise_month3_return,3
+K71,Baseline churn by last-order month: Dec / Nov / Oct,78.66% / 85.66% / 92.10%,share,phase3 baseline_churn_by_recency_band,3
+K72,Single vs multi-order churn under 3-month definition,84.36% vs 50.69%,share,phase3 driver_stability_by_definition,3
+K73,Status on 2020-02-29: Active (<=38d),33871 buyers (30.65%); 41.20% of revenue,users,phase3 customer_status_segments,3
+K74,Status on 2020-02-29: At-Risk (38-64d),16525 buyers (14.95%); 939125.44 revenue (14.79%),users,phase3 customer_status_segments,3
+K75,Status on 2020-02-29: Churned/lapsed (>64d),60122 buyers (54.40%); 44.00% of revenue,users,phase3 customer_status_segments,3
+K76,Sessions with an add-to-cart,21.76%,share,phase4 eda.py p4_01 (session_summary),4
+K77,Items purchased per product view (event level),13.32%,ratio,phase4 p4_01 (daily_kpis),4
+K78,Cart -> purchase by month Oct/Nov/Dec/Jan/Feb,20.37% / 24.99% / 23.37% / 23.35% / 21.62%,ratio,phase4 funnel_by_month.csv,4
+K79,View -> cart by month Oct/Nov/Dec/Jan/Feb,64.67% / 62.12% / 52.75% / 55.39% / 57.29%,ratio,phase4 funnel_by_month.csv,4
+K80,Peak revenue day,2019-11-22 (102854.32),currency units,phase4 p4_03 (daily_kpis),4
+K81,View -> purchase among 15 most-viewed brands: best / worst,bpw.style 22.50% / jessnail 5.61%,ratio,phase4 top15_brands_by_views.csv,4
+K82,Revenue by weekday: strongest Thu / weakest Sat (Oct-Feb),1018242.11 / 761185.68,currency units,phase4 p4_09 (hour_dow_activity),4
+K83,Hourly conversion (purchase items per view) max / min (UTC),15.52% at 01h / 11.93% at 19h,ratio,phase4 p4_10,4
+K84,Visitor cohort M+1 retention Oct*/Nov/Dec/Jan,13.71% / 10.96% / 9.16% / 10.10%,share,phase4 cohort_retention_visitors_pct.csv,4
+K85,Buyer cohort M+1 retention Oct*/Nov/Dec/Jan,18.49% / 9.78% / 8.52% / 8.86%,share,phase4 cohort_retention_buyers_pct.csv,4
+K86,RFM Champions: buyers / revenue share / churn,1545 (2.14%) / 9.86% / 28.67%,mixed,phase4 rfm_segments.csv,4
+K87,RFM Loyal: buyers / revenue share / churn,2508 (3.47%) / 9.90% / 47.57%,mixed,phase4 rfm_segments.csv,4
+K88,RFM Potential Loyalists: buyers / revenue share / churn,4534 (6.28%) / 9.57% / 65.95%,mixed,phase4 rfm_segments.csv,4
+K89,RFM Recent One-timers: buyers / revenue share / churn / churn share,21094 (29.21%) / 19.59% / 88.82% / 30.51%,mixed,phase4 rfm_segments.csv,4
+K90,RFM Need Attention: buyers / revenue share / churn,13654 (18.90%) / 16.83% / 86.29%,mixed,phase4 rfm_segments.csv,4
+K91,RFM At Risk + Can't Lose Them: buyers / revenue share / churn,2513 + 80 / 6.38% + 0.47% / 80.02% and 92.50%,mixed,phase4 rfm_segments.csv,4
+K92,RFM Hibernating + Lost: buyers / revenue share / churn,12634 + 13663 / 13.04% + 14.37% / 91.13% and 92.67%,mixed,phase4 rfm_segments.csv,4
+K93,Repeat buyers within Oct-Dec by acquisition month Oct*/Nov/Dec,28.78% / 16.79% / 7.04%,share,phase4 acquisition_month_quality.csv,4
+K94,Top-15 brands: view->cart range / cart->purchase range,24.57%-79.15% / 20.17%-28.69%,ratio,phase4 top15_brands_by_views.csv,4
+K95,H1 single vs repeat churn gap,29.09 pp [95% CI 28.23-29.95]; OR 5.93; Cramér's V 0.316; p<1e-300,stat,phase5 hypothesis_results.csv,5
+K96,H2 cart removal: median removal rate churned vs retained,0.350 vs 0.467; rank-biserial -0.163; p=1.7e-162 (n=71568),stat,phase5 hypothesis_results.csv,5
+K97,H2 churn in lowest cart-removal decile (no removals),98.35%,share,phase5 h2_churn_by_removal_decile.csv,5
+K98,H3 no 2nd order within 60 days of first order: Dec- vs Nov-acquired,84.41% (n=19702) vs 80.43% (n=26761); +3.98 pp [3.29-4.68]; h=0.105; p=1.8e-28,stat,phase5 h3_no_repeat_60d.csv,5
+K99,H4 churn no activity vs any activity in last 31 days,92.93% vs 77.24%; +15.69 pp [15.18-16.20]; OR 3.87; Cramér's V 0.260,stat,phase5 hypothesis_results.csv,5
+K100,H5 median AOV churned vs retained,26.66 vs 37.15 currency units; rank-biserial -0.181; p=3.2e-199,stat,phase5 hypothesis_results.csv,5
+K101,H6 median first-order value Oct*/Nov/Dec acquisition,29.99 / 28.92 / 24.47; epsilon-squared 0.006; p=3.0e-93,stat,phase5 hypothesis_results.csv,5
+K102,H2 stratified rank-biserial (single-order / repeat); H4 churn flat-or-growing group,-0.143 / -0.057; 82.06% (n=24616),stat,phase5 hypothesis_tests.py output; h4_engagement_crosstab.csv,5
+K103,Model features used (leak-free),41 features; train 57780 / test 14445 (stratified 80/20; seed 42),count,phase6 features_used.csv; metrics_summary.json,6
+K104,CV ROC-AUC (5-fold): RFM baseline / logistic / Random Forest / XGBoost,0.7151 / 0.7877 / 0.7919 / 0.7932,AUC,phase6 cv_results.csv,6
+K105,Holdout XGBoost ROC-AUC / PR-AUC churn / PR-AUC retained,0.7973 / 0.9486 / 0.4682 (baselines 0.5 / 0.8502 / 0.1498),AUC,phase6 holdout_results.csv,6
+K106,Holdout XGBoost precision / recall / F1 (churn class; threshold 0.5),0.932 / 0.7819 / 0.8504,ratio,phase6 holdout_results.csv,6
+K107,Holdout XGBoost precision / recall / F1 (retained class),0.3533 / 0.6761 / 0.4641,ratio,phase6 holdout_results.csv,6
+K108,Naive always-churn accuracy vs XGBoost accuracy,85.02% vs 76.61%,share,phase6 holdout_results.csv,6
+K109,XGBoost confusion matrix (TN / FP / FN / TP),1463 / 701 / 2678 / 9603,count,phase6 confusion_matrix_best.csv,6
+K110,Precision@top 10% / 20% highest churn scores,97.30% / 96.68%,share,phase6 holdout_results.csv,6
+K111,Lowest-risk 10% / 20%: share who actually stayed; lift,54.50% (lift 3.64) / 42.23%; top 20% lowest-risk capture 56.38% of stayers,share,phase6 holdout_results.csv; gain_lift_retained.csv,6
+K112,Top SHAP drivers (XGBoost),n_active_days; events_last_31d; avg_days_between_orders; tenure_days; view_to_cart_rate,rank,phase6 shap_importance.csv,6
+K113,Calibrated OOF ROC-AUC / Brier score,0.7956 / 0.1015,metric,phase6 metrics_summary.json,6
+K114,Risk tiers Oct-Dec cohort (calibrated OOF): Low <0.60 / Medium / High / Very high,6101 (actual 42.19%) / 10369 (71.16%) / 14748 (85.59%) / 41007 (94.68%),users,phase6 risk_tiers.csv,6
+K115,Low-risk tier share of Jan-Feb spend,48.04% of Jan-Feb cohort spend from 8.45% of buyers,share,phase6 risk_tiers.csv,6
+K116,Deployment (orders-only) model CV ROC-AUC,0.7348 ± 0.0048 (deterministic after fixing feature row order in Phase 10),AUC,phase6 metrics_summary.json,6
+K117,Current buyers (Dec 2019-Feb 2020) scored for Mar-Apr 2020,69116 buyers; expected churners 58632.95 (84.83%),users,phase6 current_buyers_churn_scores_mar_apr.csv,6
+K118,Current risk tiers Low / Medium / High / Very high (buyers; Dec-Feb spend),5693 (921088.14) / 3941 (304759.09) / 20864 (1123095.29) / 38618 (1214516.23),users,phase6 current_risk_tiers_mar_apr.csv,6
+K119,Low + Medium risk tiers: share of buyers / share of Jan-Feb spend,22.81% / 72.66%,share,phase6 risk_tiers.csv,6
+K120,Historical CLV (Oct-Feb spend per buyer) mean / median / p90,57.44 / 33.20 / 122.22 (110518 buyers),currency units,phase7 phase7_numbers.json,7
+K121,Historical CLV by RFM segment: Champions / Loyal / Recent One-timers (avg Oct-Feb spend),336.98 / 202.07 / 41.77,currency units,phase7 historical_clv_by_rfm_segment.csv,7
+K122,BG/NBD calibration params (r / alpha / a / b),0.281 / 43.798 / 0.1251 / 0.4272,param,phase7 phase7_numbers.json,7
+K123,BG/NBD holdout purchase days predicted vs actual (Jan-Feb),21741.7 vs 16859 (+29.0%),count,phase7 phase7_numbers.json,7
+K124,BG/NBD holdout: per-user MAE / correlation / AUC for any repeat,0.370 / 0.533 / 0.706,metric,phase7 phase7_numbers.json,7
+K125,Gamma-Gamma frequency-monetary correlation (independence check),0.028,corr,phase7 phase7_numbers.json,7
+K126,Holdout spend predicted vs actual (60-day CLV),1081670.92 vs 782262.97; Pearson 0.451; Spearman 0.234,currency units,phase7 phase7_numbers.json,7
+K127,Top predicted-CLV decile share of actual Jan-Feb spend,49.70%,share,phase7 clv_holdout_by_decile.csv,7
+K128,Predicted 90-day CLV (full refit; all 110518 buyers) total / mean / median,1849732.14 / 16.74 / 9.24,currency units,phase7 phase7_numbers.json,7
+K129,Average orders in 60 days of retained buyers (Jan-Feb),1.593,orders,phase7 (user_churn_features future_orders where churned=0),7
+K130,Revenue at risk Mar-Apr 2020 (sum of churn prob x value if retained),3508675.24 of 4222121.94 value-if-retained (69116 buyers),currency units,phase7 phase7_numbers.json,7
+K131,High-value cutoff (top 30% predicted 90-day CLV),17.32,currency units,phase7 phase7_numbers.json,7
+K132,Value x risk: Save now (high value + p>=0.80),12735 buyers; avg churn 0.888; revenue at risk 817779.03 (23.3%),users,phase7 value_risk_matrix.csv,7
+K133,Value x risk: Protect / Grow / Automate buyers (RaR share),8335 (9.1%) / 1228 (0.8%) / 46818 (66.9%),users,phase7 value_risk_matrix.csv,7
+K134,Campaign ASSUMPTIONS,contact 0.50 per customer; 10% discount; 40% gross margin; save rate 10% (low end of B7),assumption,phase7 clv_economics.py,7
+K135,Save-now campaign: saves / incremental revenue / cost / net / ROI,1131.1 / 81777.90 / 18068.63 / 14642.53 / +81.0%,currency units,phase7 campaign_strategies.csv,7
+K136,Save-now break-even save rate (40% margin),4.69%,share,phase7 campaign_strategies.csv,7
+K137,Strategy ROI: all high-risk / everyone / all high-value,+74.7% (net 54123.21; 59553 buyers) / +38.5% (net 38986.97) / +0.1% (net 49.89; 21070 buyers),share,phase7 campaign_strategies.csv,7
+K138,Save-now ROI range: save 2.5% at 30% margin to save 30% at 50% margin,-56.9% to +332.9%,share,phase7 roi_sensitivity_save_rate_x_margin.csv,7
+K139,A/B baseline 60-day repeat rate (Nov+Dec first-time buyers),17.89%,share,phase7 phase7_numbers.json (phase5 h3_no_repeat_60d.csv),7
+K140,A/B sample size per arm (MDE +2 pp; alpha 0.05; power 0.80),6011,users,phase7 phase7_numbers.json,7
+K141,New first-time buyers per month (Nov-Feb avg) / A/B duration,21189 / 3 weeks enrolment + 9 weeks follow-up = 12 weeks,users,phase7 new_first_time_buyers_per_month.csv,7
+K142,Expected churners Mar-Apr from exported 2-decimal scores (used in Phases 7-8; K117 uses unrounded scores),58597.3,users,phase8 verify_measures.py (dim_customer churn_score_mar_apr),8
+K143,Power BI star schema rows: fact_orders / dim_customer / fact_brand_monthly / dim_brand / dim_date = fact_daily_kpis,155617 / 110518 / 1260 / 274 / 152,rows,phase8 build_dashboard_data.py,8
+K144,Phase 7 CLV fix: buyers whose 90-day CLV was blank before the fix (one-time buyers with T <= 50 days),30617 of 110518 (pre-fix results: Save now 3376 buyers; ROI +92.8%),users,phase8 check of phase7 clv_90d_all_buyers.csv (lifetimes NaN),8
+K145,Value x risk quadrants avg churn probability / revenue at risk: Save now / Protect / Grow / Automate,0.888 (817779.03) / 0.495 (318102.22) / 0.674 (26992.73) / 0.904 (2345801.26),mixed,phase7 value_risk_matrix.csv,8
+K146,At-risk action list rows embedded in HTML dashboard / in Excel,150 per quadrant (600) / 69116,rows,phase8 build_dashboard_data.py; build_excel_workbook.py,8
+K147,Average second-order value (all buyers' 2nd order),42.20,currency units,phase9 recommendation_impacts.py (orders.csv),9
+K148,Second-order nudge break-even uplift in 60-day repeat rate: 10% offer to all / message only (0.50 contact) / automated message (0.10 contact),9.91 pp / 2.96 pp / 0.59 pp,pp,phase9 impacts.json,9
+K149,Second-order nudge at +2 pp uplift (21189 new buyers/month): extra repeat buyers / net gross profit per month automated message vs 10% offer,423.8 / +5035.11 vs -21222.86,mixed,phase9 impacts.json; second_order_breakeven.csv,9
+K150,Revised A/B: 3 arms (control / message only / message + 10% offer) x 6011 = total / enrolment,18033 / 4 weeks (+9 weeks follow-up = 13 weeks),users,phase9 impacts.json,9
+K151,Discount avoided per campaign by not discounting Protect buyers (all-high-value minus Save-now discount cost),23149.22,currency units,phase9 impacts.json (phase7 campaign_strategies.csv),9
+K152,Automate quadrant no-discount nudge (46818 buyers; 2.5% save; 0.10 contact): incremental revenue / cost / net / ROI / break-even save rate,58645.03 / 4681.80 / 18776.21 / +401% / 0.50%,currency units,phase9 impacts.json,9
+K153,Cart recovery: each 1 pp lower session cart abandonment = extra ordering sessions / revenue (Oct-Feb; per month),9872 / 402730.33 (80546.07 per month),mixed,phase9 impacts.json (session_summary; AOV K15),9
+K154,Store session cart abandonment minus Baymard average (B1; definitions differ),16.99 pp,pp,phase9 impacts.json,9
+K155,Dec-acquired buyers matching Nov 60-day repeat rate: extra repeat buyers / revenue at avg 2nd-order value,784 / 33101.26,mixed,phase9 impacts.json (phase5 h3_no_repeat_60d.csv),9
+K156,Rounded display forms for resume / LinkedIn (from K01 / K13 / K14 / K130 / K12),20.7M events / 110K buyers / 6.35M currency units revenue / 3.5M currency units at risk / 155K orders,display,rounded from K01 K13 K14 K130 K12,10
+K157,Project scope counts: SQL business queries / validation checks / EDA charts / hypotheses / model features / DAX measures / recommendations,15 / 6 / 18 / 6 / 41 / 35 / 8,count,phase2 SQL files; phase4 eda.py; phase5; K103; phase8 guide; phase9,10
+K158,"Phase 10 reproducibility fix: deployment-model feature query lacked ORDER BY, so CV folds varied run to run; values before the fix (Save now buyers / ROI / break-even / revenue at risk)",12270 / +72.8% / 5.00% / 3507812.66,mixed,phase10 rerun of src/p6_churn_model.py (two identical runs after fix),10
+K159,Strategy table other rows (saves / incremental revenue / cost / break-even): all high-risk / everyone / all high-value,5364.1 / 316358.03 / 72420.00 / 4.9% ; 5859.7 / 350867.52 / 101360.04 / 6.7% ; 1544.0 / 113588.13 / 45385.36 / 10.0%,currency units,phase7 campaign_strategies.csv,10
+K160,Revenue at risk summed from 4-decimal CSV export (Power BI / Excel total; K130 uses unrounded values),3508675.25,currency units,phase8 dim_customer.csv revenue_at_risk_mar_apr,10
+K161,Rounded display forms for resume / LinkedIn (from K20 / K105 / K162 / K39 / K136 / K135 / K25 / K26),85% churn / AUC 0.80 / 0.73 RFM baseline / 88% of repeats within 60 days / under 5% break-even / +81% ROI / 90% vs 61% churn / 12.7K save-now buyers / 69K scored buyers,display,rounded from K20 K105 K162 K39 K136 K135 K25 K26 K132 K117,10
+K162,Holdout ROC-AUC of the RFM baseline (same 20% holdout as K105; K104 is its CV value),0.7293,AUC,phase6 holdout_results.csv,10
+K163,Store revenue Jan + Feb 2020 (all buyers; actual 2-month revenue used to sanity-check K130),2494244.14,currency units,orders.csv SUM(order_value) WHERE order_ts >= 2020-01-01; q01_monthly_kpis_mom (Jan 1307817.49 + Feb 1186426.65),11
+K164,Revenue at risk (K130) and value-if-retained relative to a real 2-month revenue (K163): K130 is an upper bound,1.41x / 1.69x,ratio,K130 / K163; 4222121.94 / K163,11
+K165,Rounded display forms added in the recruiter-review fixes (from K23 / K14 / K135 / K163),74% of Oct-Dec revenue from buyers who never returned / 6.35M revenue / ~14.6K net per campaign wave / 2.49M Jan-Feb revenue / 3.6x lift / ~16-point churn rise after a silent month / ~10-point lift needed for a blanket new-buyer offer,display,rounded from K23 K14 K135 K163 K111 K99 K148,11
+K166,Rounded display forms for impact-style resume bullets (from K30 / K153 / K143),87% cart abandonment / ~403K revenue per 1 pp less abandonment over five months / 35 DAX measures,display,rounded from K30 K153; DAX count from phase8 verify_measures.py,11
+K167,Revenue value of 1 pp lower session cart abandonment as a share of Oct-Feb revenue (K153 / K14),6.34% (~6%),share,402730.33 / 6348267.70,11

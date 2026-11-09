@@ -1,0 +1,9 @@
+key,n_rows,n_distinct
+orders.order_id,155617,155617
+user_churn_features.user_id,72225,72225
+daily_kpis.date,152,152
+"brand_monthly_funnel.(month,brand)",1260,1260
+"category_monthly_funnel.(month,category_id)",2432,2432
+"hour_dow_activity.(dow,hour)",168,168
+"session_summary.(month,bucket)",20,20
+products.product_id,54566,54566

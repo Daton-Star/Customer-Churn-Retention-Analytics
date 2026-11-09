@@ -1,0 +1,71 @@
+{
+  "hist_clv_mean": 57.44102951555403,
+  "hist_clv_median": 33.2,
+  "hist_clv_p90": 122.22,
+  "hist_clv_buyers": 110518,
+  "bgnbd_params": {
+    "r": 0.281,
+    "alpha": 43.7983,
+    "a": 0.1251,
+    "b": 0.4272
+  },
+  "holdout_pred_purchase_days": 21741.720300723147,
+  "holdout_actual_purchase_days": 16859.0,
+  "holdout_mae_purchases": 0.3701659867547649,
+  "holdout_corr_purchases": 0.5330442799649143,
+  "auc_expected_purchases_vs_any_holdout_purchase": 0.7063982240833713,
+  "gg_freq_monetary_corr": 0.027992711382869094,
+  "gg_params": {
+    "p": 6.8015,
+    "q": 1.8665,
+    "v": 6.9572
+  },
+  "gg_population_aov": 54.60658983908027,
+  "holdout_pred_spend": 1081670.9229586993,
+  "holdout_actual_spend": 782262.97,
+  "holdout_spend_corr": 0.451244967983591,
+  "holdout_spend_spearman": 0.2343759125849747,
+  "top_decile_actual_spend_share": 0.49695698877322547,
+  "full_buyers": 110518,
+  "clv90_total": 1849732.1408944628,
+  "clv90_mean": 16.736931005758905,
+  "clv90_median": 9.244041989526504,
+  "bgnbd_full_params": {
+    "r": 0.2166,
+    "alpha": 37.4909,
+    "a": 0.224,
+    "b": 0.6235
+  },
+  "retained_avg_orders_60d": 1.593236000739235,
+  "high_value_cutoff_clv90": 17.317703664638806,
+  "rar_total": 3508675.2425624104,
+  "current_buyers": 69116,
+  "value_if_retained_total": 4222121.940382554,
+  "ab_baseline_repeat60": 0.17885198975528915,
+  "ab_mde_pp": 2.0,
+  "ab_n_per_arm": 6011,
+  "ab_new_buyers_per_month": 21189.0,
+  "ab_enrol_weeks": 3,
+  "ab_total_weeks": 12,
+  "break_even_save_now": 0.04690570637142393,
+  "save_now": {
+    "targeted": 12735,
+    "expected_saves": 1131.0649999999998,
+    "incremental_revenue": 81777.90306536132,
+    "incremental_gross_profit": 32711.161226144526,
+    "discount_cost": 11701.134657000002,
+    "contact_cost": 6367.5,
+    "total_cost": 18068.634657000002,
+    "net_profit": 14642.526569144524,
+    "roi": 0.8103836757511634,
+    "break_even_save_rate": 0.04690570637142393
+  },
+  "assumptions": {
+    "contact_cost": 0.5,
+    "discount": 0.1,
+    "gross_margin": 0.4,
+    "save_rate": 0.1,
+    "high_value_pctl": 0.7,
+    "high_risk": 0.8
+  }
+}

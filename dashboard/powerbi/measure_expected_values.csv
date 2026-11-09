@@ -1,0 +1,25 @@
+measure,expected_value,key_numbers_id
+Total Revenue,6348267.7,K14
+Total Orders,155617,K12
+Buyers,110518,K13
+AOV,40.79,K15
+Orders per Buyer,1.408,K16
+Repeat Purchase Rate,21.09%,K17
+Cart to View %,58.54%,K28
+Purchase per Cart %,22.75%,K29
+Cart Abandonment %,87.21%,K30
+Session Conversion %,3.43%,K31
+Churn Cohort Buyers,72225,K18
+Churned Buyers,61403,K19
+Churn Rate,85.02%,K20
+Scored Current Buyers,69116,K117
+Expected Churners Mar-Apr,58597.3,K142 (K117 = 58632.95 from unrounded scores)
+Revenue at Risk,3508675.25,K130 (3508675.24 before 4-decimal CSV rounding)
+Predicted CLV 90d,1849732.41,K128 (1849732.14 before 4-decimal CSV rounding)
+Save-now Buyers,12735,K132
+Save-now Revenue at Risk,817779.03,K132
+Active / At-Risk / Churned buyers (Feb 29),33871 / 16525 / 60122,K73-K75
+Save-now Campaign Net Profit (save rate 10%),14642.53,K135
+Save-now Campaign ROI (save rate 10%),+81.0%,K135
+Save-now Break-even Save Rate,4.69%,K136
+Churn Rate by Oct-Dec orders 1 / 2 / 3 / 4+,90.37% / 70.00% / 51.69% / 33.33%,K48

@@ -1,0 +1,18 @@
+{
+  "name": "Churn & Retention",
+  "dataColors": ["#2a78d6", "#eb6834", "#1baf7a", "#8a8984", "#7fb2ee", "#f4a481", "#9bdcc0", "#c9c8c4"],
+  "background": "#fcfcfb",
+  "foreground": "#22211f",
+  "tableAccent": "#2a78d6",
+  "good": "#1baf7a",
+  "neutral": "#e3a008",
+  "bad": "#d64545",
+  "maximum": "#1f5fae",
+  "center": "#7fb2ee",
+  "minimum": "#e8f1fc",
+  "textClasses": {
+    "title": { "fontFace": "Segoe UI Semibold", "fontSize": 13, "color": "#22211f" },
+    "label": { "fontFace": "Segoe UI", "fontSize": 10, "color": "#5f5e5a" },
+    "callout": { "fontFace": "Segoe UI Semibold", "fontSize": 26, "color": "#22211f" }
+  }
+}

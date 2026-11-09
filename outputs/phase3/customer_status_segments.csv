@@ -1,0 +1,4 @@
+status,buyers,buyer_share_pct,revenue_oct_feb,revenue_share_pct,repeat_buyer_pct
+1. Active,33871,30.65,2615648.77,41.2,33.58
+2. At-Risk,16525,14.95,939125.44,14.79,24.39
+3. Churned (lapsed),60122,54.4,2793493.49,44.0,13.14

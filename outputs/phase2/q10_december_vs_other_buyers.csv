@@ -1,0 +1,4 @@
+acquisition_group,buyers,churn_rate_pct,avg_orders_oct_dec,avg_aov,avg_spend_oct_dec,avg_recency_days,avg_jan_feb_spend
+First order in Dec 2019,19702,87.34,1.083,35.68,39.02,16.6,7.13
+First order in Nov 2019,26761,85.63,1.228,40.19,50.22,42.0,9.75
+First order in Oct 2019 (left-censored),25762,82.61,1.559,41.89,67.59,65.9,14.78

@@ -1,0 +1,4 @@
+status_feb29,status_sort,rule
+Active,1,<=38 days since last order
+At-Risk,2,38-64 days
+Churned,3,>64 days

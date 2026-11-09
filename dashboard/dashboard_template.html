@@ -1,0 +1,467 @@
+<title>Cosmetics Churn Dashboard</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600&display=swap">
+<style>
+/* Layout: a retention team's working console. Sticky tab bar, KPI strip, then a 12-column grid of panels per page. */
+:root {
+  --bg: #f6f6f3; --surface: #fcfcfb; --ink: #22211f; --ink2: #5f5e5a; --line: #e3e2dd; --chip: #efeeea;
+  --blue: #2a78d6; --orange: #eb6834; --aqua: #1baf7a; --gray: #8a8984;
+  --good: #1a8f63; --warn: #b7791f; --bad: #c8412f;
+  --blue-soft: #e5effb; --orange-soft: #fcebe3;
+  --f-display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-num: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #161615; --surface: #1f1f1d; --ink: #ecebe7; --ink2: #a8a7a2; --line: #34332f; --chip: #2a2a27;
+  --blue: #5b9be6; --orange: #f08a5d; --aqua: #3cc794; --gray: #9e9d98;
+  --good: #46c48f; --warn: #e0a645; --bad: #ef6b57; --blue-soft: #1d2b3d; --orange-soft: #3a2519; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #161615; --surface: #1f1f1d; --ink: #ecebe7; --ink2: #a8a7a2; --line: #34332f; --chip: #2a2a27;
+  --blue: #5b9be6; --orange: #f08a5d; --aqua: #3cc794; --gray: #9e9d98;
+  --good: #46c48f; --warn: #e0a645; --bad: #ef6b57; --blue-soft: #1d2b3d; --orange-soft: #3a2519; color-scheme: dark }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 14px; line-height: 1.45; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
+.wrap { max-width: 1280px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header.top { background: var(--surface); border-bottom: 1px solid var(--line); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; }
+.top .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; padding-block: 12px 0; }
+.brand { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding-bottom: 10px; }
+.brand h1 { font-family: var(--f-display); font-weight: 600; font-size: 20px; margin: 0; letter-spacing: 0.01em; text-wrap: balance; }
+.brand p { margin: 0; color: var(--ink2); font-size: 12px; }
+nav.tabs { display: flex; gap: 4px; margin-left: auto; overflow-x: auto; max-width: 100%; }
+nav.tabs button { font: 500 13px var(--f-body); color: var(--ink2); background: none; border: 0; border-bottom: 3px solid transparent; padding: 10px 12px 11px; cursor: pointer; white-space: nowrap; }
+nav.tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--blue); }
+nav.tabs button:hover { color: var(--ink); }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+main.wrap { padding-block: 20px 40px; display: flex; flex-direction: column; gap: 16px; }
+.headline { font-family: var(--f-display); font-size: 22px; font-weight: 500; line-height: 1.3; margin: 0; max-width: 62ch; text-wrap: balance; }
+.headline b { color: var(--orange); font-weight: 600; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(165px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.kpi { background: var(--surface); padding: 12px 14px; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.kpi .lab { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink2); }
+.kpi .val { font-family: var(--f-num); font-size: 18px; font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.kpi .sub { font-size: 11.5px; color: var(--ink2); }
+.kpi.alert .val { color: var(--orange); }
+.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 14px 16px 12px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.panel h2 { font-family: var(--f-display); font-size: 15px; font-weight: 600; margin: 0; }
+.panel .so { font-size: 12.5px; color: var(--ink2); margin: 0; }
+.panel .so b { color: var(--ink); font-weight: 600; }
+.s4 { grid-column: span 4; } .s5 { grid-column: span 5; } .s6 { grid-column: span 6; } .s7 { grid-column: span 7; } .s8 { grid-column: span 8; } .s12 { grid-column: span 12; }
+@media (max-width: 980px) { .s4, .s5, .s6, .s7, .s8 { grid-column: span 12; } }
+.chart { position: relative; height: 240px; }
+.chart.tall { height: 300px; }
+.src { font-size: 11px; color: var(--ink2); font-family: var(--f-num); display: none; }
+body.show-src .src { display: inline; }
+body.show-src span.src.blk { display: block; }
+.srcbtn { font: 500 12px var(--f-body); color: var(--blue); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; }
+.page[hidden] { display: none !important; }
+.quads { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+.quad { border: 1px solid var(--line); border-left: 4px solid var(--qc); border-radius: 4px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; background: var(--surface); }
+.quad h3 { margin: 0; font-size: 14px; font-weight: 600; }
+.quad .n { font-family: var(--f-num); font-size: 18px; }
+.quad p { margin: 0; font-size: 12px; color: var(--ink2); }
+.whatif { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+@media (max-width: 640px) { .whatif { grid-template-columns: 1fr; } }
+.ctrl { display: flex; flex-direction: column; gap: 4px; }
+.ctrl label { font-size: 12px; color: var(--ink2); display: flex; justify-content: space-between; }
+.ctrl output { font-family: var(--f-num); color: var(--ink); }
+input[type=range] { width: 100%; accent-color: var(--blue); }
+.wi-out { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.wi-out div { background: var(--chip); border-radius: 4px; padding: 8px 10px; }
+.wi-out .lab { font-size: 11px; color: var(--ink2); text-transform: uppercase; letter-spacing: 0.05em; }
+.wi-out .v { font-family: var(--f-num); font-size: 18px; font-variant-numeric: tabular-nums; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.toolbar select, .toolbar input { font: 13px var(--f-body); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 6px 8px; min-width: 0; }
+.toolbar .count { margin-left: auto; font-size: 12px; color: var(--ink2); }
+.tablebox { overflow-x: auto; max-height: 520px; overflow-y: auto; border: 1px solid var(--line); border-radius: 4px; }
+table { border-collapse: collapse; width: 100%; font-size: 12.5px; }
+th, td { padding: 6px 10px; border-bottom: 1px solid var(--line); text-align: left; white-space: nowrap; }
+th { position: sticky; top: 0; background: var(--chip); font-weight: 600; font-size: 11.5px; color: var(--ink2); z-index: 1; }
+td.num, th.num { text-align: right; font-family: var(--f-num); font-variant-numeric: tabular-nums; }
+td.wrap { white-space: normal; min-width: 300px; font-size: 12px; }
+.pill { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 11.5px; font-weight: 500; color: var(--ink); background: var(--chip); border: 1px solid var(--line); }
+.pill.q1 { border-color: var(--orange); background: var(--orange-soft); }
+.pill.q2 { border-color: var(--aqua); }
+.pill.q3 { border-color: var(--blue); background: var(--blue-soft); }
+.risk { font-family: var(--f-num); font-weight: 500; padding: 1px 6px; border-radius: 3px; }
+.bar { display: inline-block; height: 8px; background: var(--blue); border-radius: 2px; vertical-align: middle; margin-right: 6px; opacity: 0.75; }
+.st-Active { color: var(--good); } .st-At-Risk { color: var(--warn); } .st-Churned { color: var(--bad); }
+.hyp td { white-space: normal; vertical-align: top; }
+.tag { font-size: 11px; font-weight: 600; padding: 1px 6px; border-radius: 3px; background: var(--chip); }
+.tag.ok { color: var(--good); } .tag.no { color: var(--bad); } .tag.meh { color: var(--warn); }
+footer { color: var(--ink2); font-size: 12px; padding-block: 0 32px; }
+footer p { margin: 4px 0; max-width: 100ch; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <h1>Cosmetics Churn &amp; Retention</h1>
+      <p>REES46 cosmetics store · events 1 Oct 2019 – 29 Feb 2020 · money in currency units · scores as of 29 Feb 2020</p>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Dashboard pages">
+      <button role="tab" id="tab-overview" aria-controls="overview" aria-selected="true">Executive Overview</button>
+      <button role="tab" id="tab-drivers" aria-controls="drivers" aria-selected="false">Funnel &amp; Churn Drivers</button>
+      <button role="tab" id="tab-action" aria-controls="action" aria-selected="false">At-Risk Action List</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- ============================== PAGE 1 ============================== -->
+  <section class="page" id="overview" role="tabpanel" aria-labelledby="tab-overview">
+    <p class="headline"><b>85.02%</b> of Oct–Dec buyers placed no order in Jan–Feb. Repeat buying, not traffic, is where revenue leaks.</p>
+    <div class="kpis" id="kpi-overview"></div>
+    <div class="grid" style="margin-top:16px">
+      <div class="panel s8">
+        <h2>Daily revenue</h2>
+        <p class="so">Peak on <b>22 Nov 2019</b> (102,854.32), the Black Friday run-up. December falls 30.26% month on month, then January recovers.</p>
+        <div class="chart"><canvas id="c-daily" aria-label="Daily revenue line chart"></canvas></div>
+        <span class="src blk">daily_kpis.csv · K80, K34</span>
+      </div>
+      <div class="panel s4">
+        <h2>Customer status on 29 Feb 2020</h2>
+        <p class="so"><b>54.40%</b> of all buyers have lapsed (&gt;64 days since last order). Another 14.95% are at risk.</p>
+        <div class="chart"><canvas id="c-status" aria-label="Customer status bar chart"></canvas></div>
+        <span class="src blk">Phase 3 status rules · K73–K75</span>
+      </div>
+      <div class="panel s6">
+        <h2>Monthly revenue and AOV</h2>
+        <p class="so">AOV dips to <b>37.27</b> in December. Holiday shoppers buy smaller baskets.</p>
+        <div class="chart"><canvas id="c-monthly" aria-label="Monthly revenue column chart"></canvas></div>
+        <span class="src blk">q01_monthly_kpis_mom · K32–K35</span>
+      </div>
+      <div class="panel s6">
+        <h2>New vs returning buyers per month</h2>
+        <p class="so">The returning share doubles from <b>14.60%</b> (Nov) to <b>29.93%</b> (Feb), but new buyers still dominate.</p>
+        <div class="chart"><canvas id="c-nvr" aria-label="New versus returning buyers stacked columns"></canvas></div>
+        <span class="src blk">q03_new_vs_returning_buyers · K36</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== PAGE 2 ============================== -->
+  <section class="page" id="drivers" role="tabpanel" aria-labelledby="tab-drivers" hidden>
+    <p class="headline">Single-order buyers have about <b>6×</b> the odds of churning, and silence in the last month adds <b>+15.69 pp</b>.</p>
+    <div class="kpis" id="kpi-drivers"></div>
+    <div class="grid" style="margin-top:16px">
+      <div class="panel s5">
+        <h2>Shopping funnel (events, Oct–Feb)</h2>
+        <p class="so">Carts are common (58.54% of views) but only <b>22.75%</b> of cart adds become purchased items. 87.21% of cart sessions end without an order.</p>
+        <div class="chart"><canvas id="c-funnel" aria-label="Funnel bar chart"></canvas></div>
+        <span class="src blk">daily_kpis, session_summary · K28–K31</span>
+      </div>
+      <div class="panel s7">
+        <h2>Funnel conversion by month</h2>
+        <p class="so">View→cart drops in December (52.75%) while cart→purchase holds up. Holiday browsing is less committed.</p>
+        <div class="chart"><canvas id="c-funnel-m" aria-label="Monthly conversion lines"></canvas></div>
+        <span class="src blk">funnel_by_month · K78, K79</span>
+      </div>
+      <div class="panel s4">
+        <h2>Churn by number of Oct–Dec orders</h2>
+        <p class="so">Churn falls from <b>90.37%</b> after one order to 33.33% after four or more. The second order is the lever.</p>
+        <div class="chart"><canvas id="c-orders" aria-label="Churn by order count"></canvas></div>
+        <span class="src blk">q11_churn_by_order_count · K48</span>
+      </div>
+      <div class="panel s4">
+        <h2>Churn by RFM segment</h2>
+        <p class="so">Recent One-timers are the biggest segment (21,094 buyers) and <b>30.51%</b> of all churners.</p>
+        <div class="chart tall"><canvas id="c-rfm" aria-label="Churn by RFM segment"></canvas></div>
+        <span class="src blk">rfm_segments · K86–K92</span>
+      </div>
+      <div class="panel s4">
+        <h2>What drives the churn score (SHAP)</h2>
+        <p class="so">Habit (active days), recent activity and the repeat-purchase gap rank highest in the XGBoost model (holdout AUC 0.7973).</p>
+        <div class="chart tall"><canvas id="c-shap" aria-label="SHAP feature importance"></canvas></div>
+        <span class="src blk">shap_importance · K105, K112</span>
+      </div>
+      <div class="panel s12">
+        <h2>Hypothesis tests</h2>
+        <p class="so">Effect size decides, not the p-value: with 72,225 buyers almost any gap is significant.</p>
+        <div class="tablebox" style="max-height:none"><table class="hyp" id="t-hyp"></table></div>
+        <span class="src blk">Phase 5 hypothesis_results.csv · K95–K101</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== PAGE 3 ============================== -->
+  <section class="page" id="action" role="tabpanel" aria-labelledby="tab-action" hidden>
+    <p class="headline">Contact the <b>12,735</b> Save-now buyers first: high value, high risk. Everyone else gets no-discount automated nudges.</p>
+    <div class="kpis" id="kpi-action"></div>
+    <div class="quads" id="quads" style="margin-top:16px"></div>
+    <div class="grid" style="margin-top:16px">
+      <div class="panel s6">
+        <h2>Campaign ROI by targeting strategy</h2>
+        <p class="so">At a 10% save rate, targeting value × risk gives the best ROI (+81.0%) with a fifth of the contacts. Discounting every high-value buyer only breaks even.</p>
+        <div class="chart"><canvas id="c-camp" aria-label="Campaign ROI by strategy"></canvas></div>
+        <span class="src blk">campaign_strategies · K135–K137</span>
+      </div>
+      <div class="panel s6">
+        <h2>Save-now campaign what-if</h2>
+        <p class="so">Assumptions: 0.50 contact cost, 10% discount paid by all who buy, Phase 7 churn and value estimates<span class="src"> [K134]</span>. Move the sliders to test them.</p>
+        <div class="whatif">
+          <div class="ctrl-group" style="display:flex;flex-direction:column;gap:12px">
+            <div class="ctrl"><label for="wi-save">Save rate <output id="o-save">10.0%</output></label><input type="range" id="wi-save" min="2.5" max="30" step="2.5" value="10"></div>
+            <div class="ctrl"><label for="wi-margin">Gross margin <output id="o-margin">40%</output></label><input type="range" id="wi-margin" min="30" max="50" step="5" value="40"></div>
+          </div>
+          <div class="wi-out">
+            <div><div class="lab">ROI</div><div class="v" id="w-roi"></div></div>
+            <div><div class="lab">Net profit</div><div class="v" id="w-net"></div></div>
+            <div><div class="lab">Expected saves</div><div class="v" id="w-saves"></div></div>
+            <div><div class="lab">Break-even save rate</div><div class="v" id="w-be"></div></div>
+          </div>
+        </div>
+        <span class="src blk">Formula from phase7/clv_economics.py · defaults reproduce K135, K136</span>
+      </div>
+      <div class="panel s12">
+        <h2>At-risk action list</h2>
+        <p class="so">Ranked by quadrant, then by revenue at risk. Shows the top 150 buyers of each quadrant out of 69,116 scored. The full list is in the Excel workbook and in <code>dim_customer.csv</code>.</p>
+        <div class="toolbar">
+          <select id="f-quad" aria-label="Filter by quadrant"><option value="">All quadrants</option></select>
+          <select id="f-tier" aria-label="Filter by risk tier"><option value="">All risk tiers</option></select>
+          <input id="f-id" type="search" placeholder="Find customer id" aria-label="Find customer id" inputmode="numeric">
+          <span class="count" id="f-count"></span>
+        </div>
+        <div class="tablebox"><table id="t-action"></table></div>
+        <span class="src blk">dim_customer.csv · Phases 3, 6, 7</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p><b>Data:</b> REES46 cosmetics e-commerce events (Kaggle), Oct 2019 – Feb 2020: 20,692,840 raw events, 19,583,618 after cleaning<span class="src"> [K01, K04]</span>. These are real 2019–20 data read with a 2025–26 lens. The patterns transfer; the levels are specific to this store.</p>
+    <p><button class="srcbtn" id="srcbtn" aria-pressed="false">Show sources</button> · every figure traces to <code>key_numbers.csv</code>.</p>
+    <p><b>Definitions:</b> churn = an Oct–Dec 2019 buyer with no order in Jan–Feb 2020. The October cohort is left-censored, because the data starts on 1 Oct. Churn scores are calibrated probabilities of no order in Mar–Apr 2020. CLV is a 90-day BG/NBD × Gamma-Gamma estimate, used to rank customers.</p>
+  </footer>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+const D = /*__DATA__*/null;
+const $ = (s) => document.querySelector(s);
+const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const fmt = (v, d = 0) => v == null ? "–" : Number(v).toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+const pct = (v, d = 2) => v == null ? "–" : `${Number(v).toFixed(d)}%`;
+const mon = (m) => new Date(m.slice(0, 10) + "T00:00:00Z").toLocaleString("en-US", { month: "short", year: "2-digit", timeZone: "UTC" });
+const QUAD_ORDER = ["Save now (high value, high risk)", "Protect (high value, lower risk)", "Grow (lower value, lower risk)", "Automate (lower value, high risk)"];
+const QUAD_CLASS = { [QUAD_ORDER[0]]: "q1", [QUAD_ORDER[1]]: "q2", [QUAD_ORDER[2]]: "q3", [QUAD_ORDER[3]]: "q4" };
+
+const cmp = (v, d = 2) => v == null ? "–" : Math.abs(v) >= 1e6 ? `${(v / 1e6).toFixed(d)}M` : Math.abs(v) >= 1e3 ? `${(v / 1e3).toFixed(1)}K` : fmt(v, d);
+function kpis(el, items) {
+  // Key Numbers ids ([K..]) go to the tooltip and the hidden "sources" layer, not the visible tile
+  el.innerHTML = items.map(([lab, val, sub, alert]) => {
+    const ids = (sub.match(/\[(K[^\]]+)\]/) || [])[1] || "";
+    const txt = sub.replace(/\s*\[K[^\]]+\]/, "");
+    return `<div class="kpi${alert ? " alert" : ""}"${ids ? ` title="Key Numbers: ${ids}"` : ""}><span class="lab">${lab}</span><span class="val">${val}</span><span class="sub">${txt}${ids ? `<span class="src"> [${ids}]</span>` : ""}</span></div>`;
+  }).join("");
+}
+document.getElementById("srcbtn").addEventListener("click", (e) => {
+  const on = document.body.classList.toggle("show-src");
+  e.target.textContent = on ? "Hide sources" : "Show sources"; e.target.setAttribute("aria-pressed", on);
+});
+
+kpis($("#kpi-overview"), [
+  ["Revenue", cmp(6348267.70), "Oct 2019 – Feb 2020 [K14]"],
+  ["Orders", fmt(155617), "session-based [K12]"],
+  ["Buyers", fmt(110518), "1.408 orders each [K13, K16]"],
+  ["AOV", fmt(40.79, 2), "per order [K15]"],
+  ["Repeat rate", "21.09%", "2+ orders in 5 months [K17]"],
+  ["Churn rate", "85.02%", "Oct–Dec buyers, none in Jan–Feb [K20]", true],
+  ["Revenue lost to churn", "74.18%", "of Oct–Dec revenue came from buyers who never returned [K23]", true],
+]);
+kpis($("#kpi-drivers"), [
+  ["Cart per view", "58.54%", "event level [K28]"],
+  ["Purchase per cart", "22.75%", "event level [K29]"],
+  ["Cart abandonment", "87.21%", "cart sessions, no order [K30]", true],
+  ["Session conversion", "3.43%", "sessions with an order [K31]"],
+  ["Single vs repeat churn", "+29.09 pp", "90.37% vs 61.28% [K95]", true],
+  ["Silent last 31 days", "92.93%", "churn, vs 77.24% active [K99]"],
+]);
+const sv = D.save_now_stats;
+kpis($("#kpi-action"), [
+  ["Scored buyers", fmt(69116), "Dec–Feb buyers [K117]"],
+  ["Expected churners", cmp(58632.95), "84.83% in Mar–Apr [K117]", true],
+  ["Revenue at risk (upper bound)", cmp(3508675.24), "if at-risk buyers spent like retained ones; 1.41× actual Jan–Feb revenue [K130, K164]", true],
+  ["Save-now buyers", fmt(12735), "high value, p ≥ 0.80 [K132]"],
+  ["Save-now ROI (projected)", "+81.0%", "≈14.6K net per wave at 10% save rate [K135]"],
+  ["Break-even", "4.69%", "save rate needed [K136]"],
+]);
+
+// ---------------------------------------------------------------- charts
+let charts = [];
+function baseOpts(extra = {}) {
+  const ink2 = css("--ink2"), line = css("--line");
+  return Object.assign({
+    responsive: true, maintainAspectRatio: false, animation: false,
+    plugins: { legend: { labels: { color: ink2, boxWidth: 10, font: { family: css("--f-body"), size: 11 } } },
+               tooltip: { titleFont: { family: css("--f-body") }, bodyFont: { family: css("--f-num") } } },
+    scales: { x: { ticks: { color: ink2, font: { size: 11 } }, grid: { display: false }, border: { color: line } },
+              y: { ticks: { color: ink2, font: { size: 11 } }, grid: { color: line }, border: { display: false } } },
+  }, extra);
+}
+function mk(id, cfg) { const c = new Chart(document.getElementById(id), cfg); charts.push(c); return c; }
+
+function drawAll() {
+  charts.forEach((c) => c.destroy()); charts = [];
+  Chart.defaults.font.family = css("--f-body");
+  const BLUE = css("--blue"), ORANGE = css("--orange"), AQUA = css("--aqua"), GRAY = css("--gray"), INK2 = css("--ink2");
+  const WARN = css("--warn"), BAD = css("--bad"), GOOD = css("--good");
+
+  // Page 1
+  const peak = D.daily.reduce((a, b) => (b.revenue > a.revenue ? b : a));
+  mk("c-daily", { type: "line", data: { labels: D.daily.map((d) => d.date), datasets: [{ label: "Revenue", data: D.daily.map((d) => d.revenue),
+      borderColor: BLUE, backgroundColor: BLUE + "22", fill: true, borderWidth: 1.5, tension: 0.2,
+      pointRadius: D.daily.map((d) => (d === peak ? 4 : 0)), pointBackgroundColor: ORANGE, pointBorderColor: ORANGE }] },
+    options: baseOpts({ plugins: { legend: { display: false } }, scales: {
+      x: { ticks: { color: INK2, autoSkip: false, maxRotation: 0, callback(v) { const s = this.getLabelForValue(v); return s.endsWith("-01") ? mon(s) : null; } }, grid: { display: false } },
+      y: { ticks: { color: INK2, callback: (v) => fmt(v / 1000) + "k" }, grid: { color: css("--line") } } } }) });
+
+  const st = D.status;
+  mk("c-status", { type: "bar", data: { labels: st.map((s) => s.status.replace(/^\d\. /, "")),
+      datasets: [{ label: "Buyers", data: st.map((s) => s.buyers), backgroundColor: [GOOD, WARN, BAD] }] },
+    options: baseOpts({ indexAxis: "y", plugins: { legend: { display: false },
+      tooltip: { callbacks: { label: (c) => `${fmt(c.raw)} buyers (${pct(st[c.dataIndex].buyer_share_pct)}), ${pct(st[c.dataIndex].revenue_share_pct)} of revenue` } } } }) });
+
+  const m = D.monthly;
+  mk("c-monthly", { data: { labels: m.map((r) => mon(r.month)), datasets: [
+      { type: "bar", label: "Revenue", data: m.map((r) => r.revenue), backgroundColor: m.map((r) => (r.month.startsWith("2019-12") ? ORANGE : BLUE)), yAxisID: "y", order: 2 },
+      { type: "line", label: "AOV", data: m.map((r) => r.aov), borderColor: GRAY, backgroundColor: GRAY, yAxisID: "y1", pointRadius: 3, order: 1 }] },
+    options: baseOpts({ scales: {
+      x: { ticks: { color: INK2 }, grid: { display: false } },
+      y: { ticks: { color: INK2, callback: (v) => fmt(v / 1e6, 1) + "M" }, grid: { color: css("--line") } },
+      y1: { position: "right", min: 30, max: 50, ticks: { color: INK2 }, grid: { display: false }, title: { display: true, text: "AOV", color: INK2 } } },
+      plugins: { tooltip: { callbacks: { afterLabel: (c) => c.datasetIndex === 0 && m[c.dataIndex].revenue_mom_pct != null ? `MoM ${m[c.dataIndex].revenue_mom_pct > 0 ? "+" : ""}${m[c.dataIndex].revenue_mom_pct}%` : "" } } } }) });
+
+  const n = D.new_vs_returning;
+  mk("c-nvr", { type: "bar", data: { labels: n.map((r) => mon(r.month)), datasets: [
+      { label: "New buyers", data: n.map((r) => r.new_buyers), backgroundColor: BLUE },
+      { label: "Returning buyers", data: n.map((r) => r.returning_buyers), backgroundColor: AQUA }] },
+    options: baseOpts({ scales: { x: { stacked: true, ticks: { color: INK2 }, grid: { display: false } },
+      y: { stacked: true, ticks: { color: INK2, callback: (v) => fmt(v / 1000) + "k" }, grid: { color: css("--line") } } } }) });
+
+  // Page 2
+  const f = D.funnel_totals;
+  mk("c-funnel", { type: "bar", data: { labels: ["Product views", "Cart adds", "Items purchased"],
+      datasets: [{ data: [f.views, f.carts, f.purchase_items], backgroundColor: [BLUE, BLUE + "aa", ORANGE] }] },
+    options: baseOpts({ indexAxis: "y", plugins: { legend: { display: false } },
+      scales: { x: { ticks: { color: INK2, callback: (v) => fmt(v / 1e6, 1) + "M" }, grid: { color: css("--line") } }, y: { ticks: { color: INK2 }, grid: { display: false } } } }) });
+
+  const fm = D.funnel_monthly;
+  mk("c-funnel-m", { type: "line", data: { labels: fm.map((r) => mon(r.month)), datasets: [
+      { label: "View → cart %", data: fm.map((r) => r.view_to_cart), borderColor: BLUE, backgroundColor: BLUE, pointRadius: 3 },
+      { label: "Cart → purchase %", data: fm.map((r) => r.cart_to_purchase), borderColor: ORANGE, backgroundColor: ORANGE, pointRadius: 3 },
+      { label: "View → purchase %", data: fm.map((r) => r.view_to_purchase), borderColor: GRAY, backgroundColor: GRAY, pointRadius: 3, borderDash: [4, 3] }] },
+    options: baseOpts({ scales: { x: { ticks: { color: INK2 }, grid: { display: false } },
+      y: { min: 0, max: 70, ticks: { color: INK2, callback: (v) => v + "%" }, grid: { color: css("--line") } } },
+      plugins: { tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${c.raw.toFixed(2)}%` } } } }) });
+
+  const co = D.churn_by_orders;
+  mk("c-orders", { type: "bar", data: { labels: co.map((r) => String(r.orders_oct_dec)), datasets: [{ label: "Churn rate %", data: co.map((r) => r.churn_rate_pct),
+      backgroundColor: co.map((_, i) => (i === 0 ? ORANGE : BLUE)) }] },
+    options: baseOpts({ plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => `${c.raw}% churn · ${fmt(co[c.dataIndex].buyers)} buyers` } } },
+      scales: { x: { title: { display: true, text: "Orders in Oct–Dec", color: INK2 }, ticks: { color: INK2 }, grid: { display: false } },
+                y: { min: 0, max: 100, ticks: { color: INK2, callback: (v) => v + "%" }, grid: { color: css("--line") } } } }) });
+
+  const rf = [...D.rfm_segments].sort((a, b) => a.churn_rate - b.churn_rate);
+  mk("c-rfm", { type: "bar", data: { labels: rf.map((r) => r.segment), datasets: [{ label: "Churn rate %", data: rf.map((r) => r.churn_rate),
+      backgroundColor: rf.map((r) => (r.segment === "Recent One-timers" ? ORANGE : BLUE)) }] },
+    options: baseOpts({ indexAxis: "y", plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => `${c.raw}% churn · ${fmt(rf[c.dataIndex].buyers)} buyers · ${rf[c.dataIndex].churn_share}% of churners` } } },
+      scales: { x: { min: 0, max: 100, ticks: { color: INK2, callback: (v) => v + "%" }, grid: { color: css("--line") } }, y: { ticks: { color: INK2, font: { size: 11 } }, grid: { display: false } } } }) });
+
+  const sh = D.shap;
+  mk("c-shap", { type: "bar", data: { labels: sh.map((r) => r.feature), datasets: [{ label: "Mean |SHAP|", data: sh.map((r) => r.mean_abs_shap),
+      backgroundColor: sh.map((_, i) => (i < 3 ? BLUE : BLUE + "88")) }] },
+    options: baseOpts({ indexAxis: "y", plugins: { legend: { display: false } },
+      scales: { x: { ticks: { color: INK2 }, grid: { color: css("--line") } }, y: { ticks: { color: INK2, font: { family: css("--f-num"), size: 10.5 } }, grid: { display: false } } } }) });
+
+  // Page 3
+  const cp = D.campaign.map((r) => ({ ...r, label: r.strategy.replace(/ \(.*/, "") })).sort((a, b) => b.roi - a.roi);
+  mk("c-camp", { type: "bar", data: { labels: cp.map((r) => r.label), datasets: [{ label: "ROI %", data: cp.map((r) => +(100 * r.roi).toFixed(1)),
+      backgroundColor: cp.map((r) => (r.strategy.startsWith("Save now") ? ORANGE : BLUE)) }] },
+    options: baseOpts({ indexAxis: "y", plugins: { legend: { display: false },
+      tooltip: { callbacks: { label: (c) => `ROI ${c.raw > 0 ? "+" : ""}${c.raw}% · net ${fmt(cp[c.dataIndex].net_profit, 2)} · ${fmt(cp[c.dataIndex].targeted)} targeted` } } },
+      scales: { x: { ticks: { color: INK2, callback: (v) => v + "%" }, grid: { color: css("--line") } }, y: { ticks: { color: INK2 }, grid: { display: false } } } }) });
+}
+
+// ---------------------------------------------------------------- hypotheses table
+(function hypTable() {
+  const VERDICT = { H1: ["Supported", "ok"], H2: ["Rejected: reversed", "no"], H3: ["Supported, small", "meh"],
+                   H4: ["Supported", "ok"], H5: ["Supported, small", "meh"], H6: ["Negligible in practice", "meh"] };   // Phase 5 verdicts
+  const rows = D.hypotheses.map((h) => {
+    const [t, c] = VERDICT[h.id];
+    return `<tr><td><b>${h.id}</b></td><td>${h.hypothesis}</td><td><span class="tag ${c}">${t}</span></td><td>${h.effect_size} ${Number(h.effect_value).toFixed(3)} (${h.magnitude})</td><td>${h.result}</td></tr>`;
+  }).join("");
+  $("#t-hyp").innerHTML = `<thead><tr><th>#</th><th>Hypothesis</th><th>Verdict</th><th>Effect size</th><th>Result</th></tr></thead><tbody>${rows}</tbody>`;
+})();
+
+// ---------------------------------------------------------------- quadrants
+(function quads() {
+  const plays = { [QUAD_ORDER[0]]: "Personalised win-back with a 10% offer", [QUAD_ORDER[1]]: "Loyalty perks and early access; no discount",
+                  [QUAD_ORDER[2]]: "Cross-sell bundles to lift basket size", [QUAD_ORDER[3]]: "Automated nudges only; no discount" };
+  const col = { [QUAD_ORDER[0]]: "var(--orange)", [QUAD_ORDER[1]]: "var(--aqua)", [QUAD_ORDER[2]]: "var(--blue)", [QUAD_ORDER[3]]: "var(--gray)" };
+  const q = [...D.quadrants].sort((a, b) => QUAD_ORDER.indexOf(a.quadrant) - QUAD_ORDER.indexOf(b.quadrant));
+  $("#quads").innerHTML = q.map((r) => `<div class="quad" style="--qc:${col[r.quadrant]}"><h3>${r.quadrant.replace(/ \(/, " · ").replace(")", "")}</h3>
+    <span class="n">${fmt(r.buyers)} buyers</span><p>Avg churn probability ${r.avg_churn_prob.toFixed(3)} · ${(100 * r.rar_share).toFixed(1)}% of revenue at risk</p><p><b>Play:</b> ${plays[r.quadrant]}</p></div>`).join("");
+})();
+
+// ---------------------------------------------------------------- what-if (Phase 7 maths: inc rev = s*A; cost = 0.10*(s*B + C) + 0.50*n)
+function whatIf() {
+  const s = +$("#wi-save").value / 100, m = +$("#wi-margin").value / 100;
+  $("#o-save").textContent = (100 * s).toFixed(1) + "%"; $("#o-margin").textContent = Math.round(100 * m) + "%";
+  const cost = 0.10 * (s * sv.B + sv.C) + 0.50 * sv.n, net = m * s * sv.A - cost, roi = net / cost;
+  const be = (0.10 * sv.C + 0.50 * sv.n) / (m * sv.A - 0.10 * sv.B);
+  $("#w-roi").textContent = `${roi >= 0 ? "+" : ""}${(100 * roi).toFixed(1)}%`;
+  $("#w-roi").style.color = roi >= 0 ? css("--good") : css("--bad");
+  $("#w-net").textContent = fmt(net, 2);
+  $("#w-saves").textContent = fmt(s * D.quadrants.find((q) => q.quadrant === QUAD_ORDER[0]).avg_churn_prob * sv.n, 0);
+  $("#w-be").textContent = (100 * be).toFixed(2) + "%";
+}
+["#wi-save", "#wi-margin"].forEach((id) => $(id).addEventListener("input", whatIf));
+
+// ---------------------------------------------------------------- action list
+(function actionList() {
+  const rows = D.action_list;
+  QUAD_ORDER.forEach((q) => $("#f-quad").insertAdjacentHTML("beforeend", `<option>${q}</option>`));
+  ["Low (<0.60)", "Medium (0.60-0.80)", "High (0.80-0.90)", "Very high (>=0.90)"].forEach((t) => $("#f-tier").insertAdjacentHTML("beforeend", `<option>${t}</option>`));
+  const maxRar = Math.max(...rows.map((r) => r.revenue_at_risk_mar_apr));
+  const riskBg = (p) => p >= 0.9 ? "var(--orange-soft)" : "transparent";
+  const riskCol = (p) => p >= 0.8 ? "var(--bad)" : p >= 0.6 ? "var(--warn)" : "var(--good)";
+  function render() {
+    const fq = $("#f-quad").value, ft = $("#f-tier").value, fid = $("#f-id").value.trim();
+    const sel = rows.filter((r) => (!fq || r.value_risk_quadrant === fq) && (!ft || r.risk_tier_mar_apr === ft) && (!fid || String(r.customer_key).includes(fid)));
+    $("#f-count").textContent = `${sel.length} of ${rows.length} rows shown`;
+    $("#t-action").innerHTML = `<thead><tr><th class="num">Rank</th><th>Customer</th><th>Quadrant</th><th>Risk tier</th><th class="num">Churn p</th><th class="num">CLV 90d</th><th>Revenue at risk</th><th class="num">Orders</th><th class="num">Days since order</th><th>Status</th><th>Recommended action</th><th>Owner</th></tr></thead><tbody>` +
+      sel.map((r) => `<tr><td class="num">${fmt(r.action_priority_rank)}</td><td class="num">${r.customer_key}</td>
+        <td><span class="pill ${QUAD_CLASS[r.value_risk_quadrant]}">${r.value_risk_quadrant.replace(/ \(.*/, "")}</span></td><td>${r.risk_tier_mar_apr}</td>
+        <td class="num"><span class="risk" style="color:${riskCol(r.churn_score_mar_apr)};background:${riskBg(r.churn_score_mar_apr)}">${r.churn_score_mar_apr.toFixed(2)}</span></td>
+        <td class="num">${fmt(r.clv_90d_predicted, 2)}</td>
+        <td class="num"><span class="bar" style="width:${Math.max(2, 60 * r.revenue_at_risk_mar_apr / maxRar)}px"></span>${fmt(r.revenue_at_risk_mar_apr, 2)}</td>
+        <td class="num">${r.orders_oct_feb}</td><td class="num">${r.days_since_last_order.toFixed(1)}</td>
+        <td class="st-${r.status_feb29}">${r.status_feb29}</td><td class="wrap">${r.recommended_action}</td><td>${r.action_owner}</td></tr>`).join("") + "</tbody>";
+  }
+  ["#f-quad", "#f-tier", "#f-id"].forEach((id) => $(id).addEventListener("input", render));
+  render();
+})();
+
+// ---------------------------------------------------------------- tabs (deep link with #overview / #drivers / #action)
+const tabs = [...document.querySelectorAll('[role="tab"]')];
+function show(id) {
+  tabs.forEach((t) => t.setAttribute("aria-selected", String(t.getAttribute("aria-controls") === id)));
+  document.querySelectorAll(".page").forEach((p) => (p.hidden = p.id !== id));
+  try { localStorage.setItem("churn-tab", id); } catch (e) {}
+}
+tabs.forEach((t) => t.addEventListener("click", () => { show(t.getAttribute("aria-controls")); history.replaceState(null, "", "#" + t.getAttribute("aria-controls")); }));
+let start = location.hash.slice(1);
+if (!["overview", "drivers", "action"].includes(start)) { try { start = localStorage.getItem("churn-tab") || "overview"; } catch (e) { start = "overview"; } }
+show(start);
+
+if (window.Chart) { drawAll(); } else { document.querySelectorAll(".chart").forEach((c) => (c.innerHTML = '<p class="so">Charts need the Chart.js library, which did not load. Check your connection.</p>')); }
+whatIf();
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => window.Chart && drawAll());
+new MutationObserver(() => window.Chart && drawAll()).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+</script>

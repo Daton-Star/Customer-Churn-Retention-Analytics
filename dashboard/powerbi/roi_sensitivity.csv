@@ -1,0 +1,22 @@
+save_rate,gross_margin,roi
+save 2.5%,margin 30%,-0.5687
+save 5.0%,margin 30%,-0.2087
+save 7.5%,margin 30%,0.0962
+save 10.0%,margin 30%,0.3578
+save 15.0%,margin 30%,0.7834
+save 20.0%,margin 30%,1.1148
+save 30.0%,margin 30%,1.5976
+save 2.5%,margin 40%,-0.4249
+save 5.0%,margin 40%,0.055
+save 7.5%,margin 40%,0.4616
+save 10.0%,margin 40%,0.8104
+save 15.0%,margin 40%,1.3778
+save 20.0%,margin 40%,1.8198
+save 30.0%,margin 40%,2.4634
+save 2.5%,margin 50%,-0.2811
+save 5.0%,margin 50%,0.3188
+save 7.5%,margin 50%,0.827
+save 10.0%,margin 50%,1.263
+save 15.0%,margin 50%,1.9723
+save 20.0%,margin 50%,2.5247
+save 30.0%,margin 50%,3.3293

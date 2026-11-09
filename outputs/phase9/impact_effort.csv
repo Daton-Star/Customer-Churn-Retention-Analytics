@@ -1,0 +1,9 @@
+id,name,impact,effort
+R1,Save-now win-back,High,Low
+R2,Silence-trigger nudges,High,Low
+R3,Second-order journey (A/B first),High,Medium
+R4,Cart-recovery flow,High,Low
+R5,Protect without discounts,Medium,Medium
+R6,Post-holiday follow-up,Low,Low
+R7,Fix brand data at source,Medium,High
+R8,Monthly rescoring + holdouts,Medium,Medium

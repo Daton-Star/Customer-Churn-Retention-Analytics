@@ -1,0 +1,12 @@
+chart,figure
+p4_01,"session conversion 3.43%, cart sessions 21.76%, cart events per view 58.54%, purchased items per view 13.32%"
+p4_02,Oct: v2c 64.67% c2p 20.37% v2p 13.17%; Nov: v2c 62.12% c2p 24.99% v2p 15.52%; Dec: v2c 52.75% c2p 23.37% v2p 12.33%; Jan: v2c 55.39% c2p 23.35% v2p 12.94%; Feb: v2c 57.29% c2p 21.62% v2p 12.38%
+p4_03,peak day 2019-11-22 revenue 102854.32
+p4_04,"best bpw.style 22.50%, worst jessnail 5.61%, store 13.32%"
+p4_06,1487580005092295511: v2p 11.37% price 8.73; 1487580006300255120: v2p 1.38% price 97.46; 1487580005268456287: v2p 13.76% price 7.46; 1602943681873052386: v2p 11.10% price 4.76; 1487580006317032337: v2p 22.79% price 2.22; 1487580008246412266: v2p 7.14% price 10.16; 1487580006350586771: v2p 3.52% price 46.35; 1487580013950664926: v2p 2.53% price 15.86; 1487580005595612013: v2p 14.43% price 3.00; 1487580009051717646: v2p 2.74% price 40.93; 1487580005671109489: v2p 18.73% price 2.84; 1487580007675986893: v2p 18.91% price 1.43
+p4_07,Oct: 89.24%; Nov: 86.25%; Dec: 85.83%; Jan: 86.72%; Feb: 87.55%
+p4_09,"weakest dow Sat 761185.68, strongest Thu 1018242.11; peak hour 11 UTC"
+p4_10,"conversion max 15.52% at 1h, min 11.93% at 19h"
+p4_11,"visitor M+1: Oct 13.71%, Nov 10.96%, Dec 9.16%, Jan 10.10%"
+p4_12,"buyer M+1: Oct 18.49%, Nov 9.78%, Dec 8.52%, Jan 8.86%"
+p4_18,No activity: 92.93% (n=35810); Declining: 67.17% (n=11799); Flat or growing: 82.06% (n=24616)

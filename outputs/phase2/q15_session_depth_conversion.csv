@@ -1,0 +1,5 @@
+events_per_session,sessions,session_share_pct,cart_rate_pct,purchase_rate_pct,cart_abandonment_pct,share_of_purchases_pct
+1,2894208.0,63.78,2.01,0.05,100.0,0.88
+2-5,992080.0,21.86,40.62,2.13,97.09,13.6
+6-20,453453.0,9.99,75.12,15.38,83.98,44.82
+21+,198067.0,4.36,93.52,31.97,67.63,40.69

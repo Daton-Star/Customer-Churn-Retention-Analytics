@@ -1,0 +1,21 @@
+check_name,value
+raw_rows,20692840
+exact_duplicate_rows,1109098
+null_user_session,4598
+null_brand,8757117
+null_category_code,20339246
+negative_price_rows,131
+zero_price_rows,104157
+unique_users,1639358
+unique_products,54571
+unique_sessions,4535941
+events_view,9657821
+events_remove_from_cart,3979679
+events_purchase,1287007
+events_cart,5768333
+clean_rows_after_dedup_and_filters,19583618
+total_orders,155617
+total_buyers,110518
+date_min,2019-10-01 00:00:00
+date_max,2020-02-29 23:59:59
+churn_rate_oct_dec_buyers_in_jan_feb,0.8502

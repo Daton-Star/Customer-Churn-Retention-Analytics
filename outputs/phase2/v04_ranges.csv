@@ -1,0 +1,12 @@
+col,min_val,max_val
+orders.order_ts,2019-10-01 00:06:35,2020-02-29 23:54:44
+orders.order_value,0.13,1738.1
+orders.items,1,429
+ucf.first_order_ts,2019-10-01 00:06:35,2019-12-31 23:55:23
+ucf.last_order_ts,2019-10-01 00:10:30,2019-12-31 23:57:15
+ucf.total_spend,0.13,2715.87
+ucf.recency_days,1,92
+ucf.churned,0,1
+daily_kpis.date,2019-10-01,2020-02-29
+products.median_price,0.0,327.78
+hour_dow.hour_utc,0,23

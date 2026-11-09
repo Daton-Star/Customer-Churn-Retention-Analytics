@@ -1,0 +1,5 @@
+definition,cohort_buyers,churn_rate_pct
+A. Baseline: Oct-Dec -> Jan-Feb (2 months),72225,85.02
+B. Shorter window: Oct-Dec -> Jan only (1 month),72225,89.59
+C. Longer window: Oct-Nov -> Dec-Feb (3 months),52523,78.83
+"D. Same 2-month length, shifted: Oct-Nov -> Dec-Jan",52523,82.12

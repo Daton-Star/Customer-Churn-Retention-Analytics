@@ -1,0 +1,14 @@
+duckdb==1.5.6
+pandas==3.0.5
+numpy==2.5.3
+scipy==1.18.1
+scikit-learn==1.9.1
+xgboost==3.4.1
+shap==0.54.1
+lifetimes==0.11.3
+matplotlib==3.11.2
+openpyxl==3.1.5
+# notebook walkthrough (notebooks/churn_retention_walkthrough.ipynb)
+nbformat==5.11.1
+nbconvert==7.17.2
+ipykernel==7.4.0
